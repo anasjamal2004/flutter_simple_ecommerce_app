@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/providers/product_provider.dart';
 import 'package:ecommerce_app/providers/signin_provider.dart';
+import 'package:ecommerce_app/providers/upload_product_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 

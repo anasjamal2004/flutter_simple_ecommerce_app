@@ -171,7 +171,7 @@ class _HomeState extends State<Home> {
                                     child: CustomCachedimage(
                                       imageUrl: product.images[0],
                                       height: 170,
-                                      memCacheHeight: 170,
+                                      memCacheHeight: 400,
                                       placeHolderWidget: const Center(
                                         child: LoadingAnimation(
                                           loadingColor: AppColor.greenColor,

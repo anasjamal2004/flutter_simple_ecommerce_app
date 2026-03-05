@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:ecommerce_app/data/services/supabase_services.dart';
-import 'package:ecommerce_app/providers/signin_provider.dart';
+import 'package:ecommerce_app/providers/upload_product_provider.dart';
 import 'package:ecommerce_app/view/constants/app_color.dart';
 import 'package:ecommerce_app/widgets/custom_widgets/custom_button.dart';
 import 'package:ecommerce_app/widgets/custom_widgets/custom_text.dart';
@@ -35,18 +35,32 @@ class _AddProductState extends State<AddProduct> {
   List<File>? _selectedImage;
   Future<void> _pickImage() async {
     final ImagePicker picker = ImagePicker();
-    final List<XFile>? pickedFiles = await picker.pickMultiImage(
-      imageQuality: 80,
-    );
 
-    if (pickedFiles != null) {
-      setState(() {
-        _selectedImage = pickedFiles
-            .take(3)
-            .map((images) => File(images.path))
-            .toList();
-      });
-    } else {
+    try {
+      final List<XFile>? pickedFiles = await picker.pickMultiImage(
+        imageQuality: 80,
+      );
+
+      if (!mounted) return;
+
+      if (pickedFiles == null || pickedFiles.isEmpty) {
+        return;
+      } else if (pickedFiles.length < 3) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Please select at least 3 images.")),
+        );
+
+        return;
+      } else {
+        setState(() {
+          _selectedImage = pickedFiles
+              .take(3)
+              .map((images) => File(images.path))
+              .toList();
+        });
+      }
+    } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Please select at least 3 images.")),
       );
@@ -72,7 +86,7 @@ class _AddProductState extends State<AddProduct> {
     });
   }
 
-  void addProduct() async {
+  Future<bool> addProduct() async {
     try {
       if (_selectedImage != null &&
           titleController.text.isNotEmpty &&
@@ -84,16 +98,18 @@ class _AddProductState extends State<AddProduct> {
           price: priceController.text,
           images: _selectedImage!,
         );
+        return true;
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text("Kindly Upload the images and fill the fields"),
+            content: Text("Kindly Upload the images and fill up the fields"),
             backgroundColor: Colors.red,
           ),
         );
+        return false;
       }
     } catch (error) {
-      throw Exception('Product is not uploaded: $error');
+      return false;
     }
   }
 
