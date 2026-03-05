@@ -1,6 +1,6 @@
-import 'package:ecommerce_app/providers/product_provider.dart';
-import 'package:ecommerce_app/providers/signin_provider.dart';
-import 'package:ecommerce_app/screen/start_screen/get_started.dart';
+import 'package:ecommerce_app/providers/providers.dart';
+import 'package:ecommerce_app/screen/splash_screen/splash_screen.dart';
+import 'package:ecommerce_app/view/shared_Peference/shared_services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +8,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SharedPeferencesServices.init();
   await Firebase.initializeApp();
   await Supabase.initialize(
     url: 'https://lzmdjfkzsyrfqqztfwew.supabase.co',
@@ -26,14 +27,12 @@ class EcommerceApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => SigninProvider()),
-        ChangeNotifierProvider(create: (_) => ProductUpload()),
-        ChangeNotifierProvider(create: (_) => ProductProvider()),
-        ChangeNotifierProvider(create: (_) => ProductDetailProvider()),
-        ChangeNotifierProvider(create: (_) => FavouriteProvider()),
-      ],
-      child: MaterialApp(debugShowCheckedModeBanner: false, home: GetStarted()),
+      providers: AppProviders.providers,
+
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: SplashScreen(),
+      ),
     );
   }
 }

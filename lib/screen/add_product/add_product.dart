@@ -18,10 +18,19 @@ class AddProduct extends StatefulWidget {
 }
 
 class _AddProductState extends State<AddProduct> {
-  TextEditingController titleController = TextEditingController();
-  TextEditingController priceController = TextEditingController();
-  TextEditingController descController = TextEditingController();
+  late TextEditingController titleController;
+  late TextEditingController priceController;
+  late TextEditingController descController;
   int currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    titleController = TextEditingController();
+    priceController = TextEditingController();
+    descController = TextEditingController();
+  }
+
   // Image Picker
   List<File>? _selectedImage;
   Future<void> _pickImage() async {
@@ -50,6 +59,11 @@ class _AddProductState extends State<AddProduct> {
           index >= 0 &&
           index < _selectedImage!.length) {
         _selectedImage!.removeAt(index);
+
+        if (currentIndex >= _selectedImage!.length &&
+            _selectedImage!.isNotEmpty) {
+          currentIndex = _selectedImage!.length - 1;
+        }
 
         if (_selectedImage!.isEmpty) {
           _selectedImage = null;
@@ -81,6 +95,14 @@ class _AddProductState extends State<AddProduct> {
     } catch (error) {
       throw Exception('Product is not uploaded: $error');
     }
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    priceController.dispose();
+    descController.dispose();
+    super.dispose();
   }
 
   @override

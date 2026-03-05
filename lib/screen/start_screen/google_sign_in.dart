@@ -34,7 +34,7 @@ class _GoogleSignInPageState extends State<GoogleSignInPage> {
           SizedBox(
             height: 300,
             width: double.infinity,
-            child: AppImages().onlineStoreImage,
+            child: AppImages.onlineStoreImage,
           ),
           const SizedBox(height: 140),
           const CustomText(

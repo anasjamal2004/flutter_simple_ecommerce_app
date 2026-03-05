@@ -1,18 +1,20 @@
 import 'package:flutter/cupertino.dart';
 
 class AppImages {
-  final whiteGuyImage = Image.asset(
+  static final whiteGuyImage = Image.asset(
     'assets/image/white_guy.png',
     fit: BoxFit.fitWidth,
   );
 
-  final getStartedImage = Image.asset(
+  static final getStartedImage = Image.asset(
     'assets/image/getStarted.jpg',
     fit: BoxFit.scaleDown,
   );
 
-  final onlineStoreImage = Image.asset(
+  static final onlineStoreImage = Image.asset(
     'assets/image/onlineStore.png',
     fit: BoxFit.cover,
   );
+
+  static final appIcon = Image.asset('assets/image/Icon.jpg');
 }

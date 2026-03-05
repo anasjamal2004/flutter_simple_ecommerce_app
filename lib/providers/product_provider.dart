@@ -1,6 +1,7 @@
+import 'dart:async';
 import 'package:ecommerce_app/data/model/product_model.dart';
 import 'package:ecommerce_app/data/services/supabase_services.dart';
-import 'package:ecommerce_app/view/Shared_Preference/shared_services.dart';
+import 'package:ecommerce_app/view/shared_Peference/shared_services.dart';
 import 'package:flutter/foundation.dart';
 
 class ProductProvider with ChangeNotifier {
@@ -10,20 +11,29 @@ class ProductProvider with ChangeNotifier {
   List<Product> get products => _product;
   bool get isLoading => _isLoading;
 
+  StreamSubscription<List<Product>>? _subscription;
+
   Future<void> fetchProduct() async {
-    if (products.isNotEmpty) {
+    if (_product.isNotEmpty || _subscription != null) {
       return;
     } else {
-      _isLoading = true;
-      notifyListeners();
+      Future.microtask(() {
+        _isLoading = true;
+        notifyListeners();
+      });
 
-      final stream = SupabaseServices().getProducts();
-      stream.listen((data) {
+      _subscription = SupabaseServices().getProducts().listen((data) {
         _product = data;
         _isLoading = false;
         notifyListeners();
       });
     }
+  }
+
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
   }
 }
 

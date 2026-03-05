@@ -38,7 +38,7 @@ dependencies:
   cached_network_image: ^3.4.1
   image_picker: ^1.2.0
   supabase_flutter: ^2.10.2
-  shared_preferences: ^2.5.3
+  shared_preferences: ^2.5.4
   google_fonts: ^8.0.0
   google_sign_in: ^7.2.0
   firebase_auth: ^6.1.0
@@ -55,6 +55,8 @@ flutter_launcher_icons:
   android: "ic_launcher"
   ios: true
   image_path: "assets/image/Icon.jpg"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/image/Icon.jpg"
   min_sdk_android: 21
 
 dev_dependencies:

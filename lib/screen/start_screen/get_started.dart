@@ -2,14 +2,22 @@ import 'package:ecommerce_app/screen/start_screen/google_sign_in.dart';
 import 'package:ecommerce_app/view/constants/app_color.dart';
 import 'package:ecommerce_app/view/constants/images.dart';
 import 'package:ecommerce_app/view/constants/navigation_bar.dart';
+import 'package:ecommerce_app/view/shared_Peference/shared_services.dart';
 import 'package:ecommerce_app/widgets/custom_widgets/custom_button.dart';
 import 'package:ecommerce_app/widgets/custom_widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:page_transition/page_transition.dart';
 
-class GetStarted extends StatelessWidget {
+class GetStarted extends StatefulWidget {
   const GetStarted({super.key});
+
+  @override
+  State<GetStarted> createState() => _GetStartedState();
+}
+
+class _GetStartedState extends State<GetStarted> {
+  final bool setScreen = true;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +35,7 @@ class GetStarted extends StatelessWidget {
           SizedBox(
             height: 450,
             width: double.infinity,
-            child: AppImages().getStartedImage,
+            child: AppImages.getStartedImage,
           ),
           const SizedBox(height: 10),
           const Padding(
@@ -54,16 +62,20 @@ class GetStarted extends StatelessWidget {
               child: CustomButton(
                 width: double.infinity,
                 text: 'Get Started',
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    PageTransition(
-                      type: PageTransitionType.rightToLeft,
-                      duration: const Duration(milliseconds: 200),
-                      curve: Curves.easeInOut,
-                      child: GoogleSignInPage(),
-                    ),
-                  );
+                onTap: () async {
+                  await SharedPeferencesServices.setScreen(setScreen);
+
+                  if (context.mounted) {
+                    Navigator.pushReplacement(
+                      context,
+                      PageTransition(
+                        type: PageTransitionType.rightToLeft,
+                        duration: const Duration(milliseconds: 200),
+                        curve: Curves.easeInOut,
+                        child: GoogleSignInPage(),
+                      ),
+                    );
+                  }
                 },
               ),
             ),

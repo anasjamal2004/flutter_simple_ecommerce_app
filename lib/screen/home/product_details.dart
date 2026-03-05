@@ -3,6 +3,7 @@ import 'package:ecommerce_app/data/model/product_model.dart';
 import 'package:ecommerce_app/providers/product_provider.dart';
 import 'package:ecommerce_app/view/constants/app_color.dart';
 import 'package:ecommerce_app/widgets/custom_widgets/custom_button.dart';
+import 'package:ecommerce_app/widgets/custom_widgets/custom_cachedimage.dart';
 import 'package:ecommerce_app/widgets/custom_widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -62,15 +63,20 @@ class _ProductDetailsState extends State<ProductDetails> {
                   builder: (context, provider, child) {
                     return ClipRRect(
                       borderRadius: BorderRadius.circular(20),
-                      child: CachedNetworkImage(
+                      child: CustomCachedimage(
                         imageUrl: product!.images[provider.currentIndex],
-                        fit: BoxFit.scaleDown,
-                        placeholder: (context, url) =>
-                            Center(child: CircularProgressIndicator()),
-                        errorWidget: (context, url, error) => Icon(
+                        placeHolderWidget: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                        memCacheHeight: 800,
+                        height: 0,
+                        errorWidget: const Icon(
                           Icons.broken_image,
                           size: 100,
                           color: Colors.grey,
+                        ),
+                        valueKey: ValueKey(
+                          product.images[provider.currentIndex],
                         ),
                       ),
                     );
@@ -113,6 +119,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                               borderRadius: BorderRadius.circular(17),
                               child: CachedNetworkImage(
                                 imageUrl: product.images[index],
+                                key: ValueKey(product.images[index]),
+                                memCacheHeight: 300,
+                                fadeInDuration: Duration.zero,
+                                fadeOutDuration: Duration.zero,
+                                placeholderFadeInDuration: Duration.zero,
                                 fit: BoxFit.cover,
                               ),
                             ),
